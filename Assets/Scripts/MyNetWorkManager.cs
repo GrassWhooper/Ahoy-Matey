@@ -5,24 +5,30 @@ using UnityEngine.Networking;
 public class MyNetWorkManager : NetworkManager {
     public void MyStartHost()
     {
-        Debug.Log("should start my host at : " + Time.timeSinceLevelLoad);
+		Debug.Log( Time.timeSinceLevelLoad + "---StartHost " );
         StartHost();
     }
 
     public override void OnStartHost()
     {
-        Debug.Log("Host Started At" + Time.timeSinceLevelLoad);
+		Debug.Log(Time.timeSinceLevelLoad+"---Host Started At"  );
     }
 
-	// Use this for initialization
-	void Start ()
-    {
 
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	
+	public override void OnStartClient(NetworkClient myClient)
+	{
+		Debug.Log ( Time.timeSinceLevelLoad+"---Client Start Requested");
+		InvokeRepeating	("printDots", 0f, 1f);
+	}
+
+	public override void OnClientConnect(NetworkConnection conn)
+	{
+		Debug.Log (Time.timeSinceLevelLoad + "Client Is Connected To IP : " + conn.address);
+		CancelInvoke ("printDots");
+	}
+
+    void printDots()
+	{
+		print (".");
 	}
 }
